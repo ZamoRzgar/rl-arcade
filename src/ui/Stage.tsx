@@ -249,7 +249,7 @@ function Transport() {
         <label className="speed">
           SPEED
           <input type="range" min={0} max={SPEEDS.length - 1} value={speed} onChange={(e) => st.setSpeed(Number(e.target.value))} aria-valuetext={SPEEDS[speed].label} />
-          <span style={{ color: 'var(--neon-yellow)', minWidth: 40 }}>{SPEEDS[speed].label}</span>
+          <span style={{ color: 'var(--hi)', minWidth: 40 }}>{SPEEDS[speed].label}</span>
         </label>
         {mode === 'solo' && (
           <button type="button" className={`btn small${pinned ? ' on' : ''}`} onClick={() => st.togglePin()} title="Keep this run as the baseline while you try changes (B)">
@@ -304,7 +304,7 @@ function Legend() {
       <span className="muted">low</span>
       <span className="bar" style={{ background: 'linear-gradient(90deg, var(--val-neg), var(--screen), var(--val-pos))' }} />
       <span className="muted">high</span>
-      <span>· yellow arrows: policy · faded: baseline · outlined cells: policy changed</span>
+      <span>· amber arrows: policy · faded: baseline · outlined cells: policy changed</span>
     </div>
   );
 }

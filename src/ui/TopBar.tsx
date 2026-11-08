@@ -4,7 +4,7 @@ import { encodeShare } from '../state/urlState';
 import { sfx } from '../design/sfx';
 import { invalidateTheme } from '../viz/theme';
 
-export function TopBar() {
+export function TopBar({ onHome }: { onHome: () => void }) {
   const levelId = useStore((s) => s.levelId);
   const mode = useStore((s) => s.mode);
   const sound = useStore((s) => s.sound);
@@ -28,9 +28,9 @@ export function TopBar() {
 
   return (
     <header className="topbar">
-      <div className="logo" aria-label="RL Arcade">
+      <button type="button" className="logo" onClick={onHome} title="Back to the intro page">
         RL <span>ARCADE</span>
-      </div>
+      </button>
       <div className="level-select">
         <label htmlFor="level" className="section-title" style={{ margin: 0 }}>
           Level
@@ -87,11 +87,14 @@ export function TopBar() {
       >
         CB-safe
       </button>
+      <button type="button" className="btn" onClick={onHome} title="What this site is and how to use it">
+        Guide
+      </button>
       <button type="button" className="btn icon" onClick={() => st.set({ help: true })} aria-label="Help and keyboard shortcuts" title="Help (?)">
         ?
       </button>
       <p className="challenge">
-        <span style={{ color: 'var(--neon-yellow)' }}>CHALLENGE ›</span> {level.challenge}
+        <span style={{ color: 'var(--hi)' }}>CHALLENGE ›</span> {level.challenge}
       </p>
     </header>
   );

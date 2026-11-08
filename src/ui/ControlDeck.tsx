@@ -4,6 +4,7 @@ import type { Family } from '../core/types';
 import { effectiveParams, useStore, type Tool } from '../state/store';
 import { ParamControl } from './ParamControl';
 import { getLevel } from '../core/envs/presets';
+import { plainWords } from '../core/plain';
 
 const FAMILIES: Family[] = ['bandit', 'dp', 'tabular', 'policy-gradient'];
 
@@ -84,6 +85,11 @@ export function ControlDeck() {
             </div>
           );
         })}
+        {plainWords(meta.id) && (
+          <p className="cart-plain">
+            <b style={{ color: 'var(--text)' }}>{meta.name}:</b> {plainWords(meta.id)!.simple}
+          </p>
+        )}
       </section>
 
       <section className="panel">

@@ -6,6 +6,7 @@ import { TDAgent } from '../../src/core/agents/tabular/td';
 import { convergenceEpisode, movingAverage } from '../../src/core/metrics';
 import { ALGORITHMS } from '../../src/core/registry';
 import { runExperiment } from '../../src/core/engine';
+import { PLAIN } from '../../src/core/plain';
 import type { Experiment } from '../../src/core/types';
 
 describe('rng', () => {
@@ -85,6 +86,17 @@ describe('metrics', () => {
     const c = convergenceEpisode(curve);
     expect(c).toBeGreaterThan(40);
     expect(c).toBeLessThan(70);
+  });
+});
+
+describe('plain-language explanations', () => {
+  it('exist for every registered algorithm', () => {
+    for (const def of ALGORITHMS) {
+      const p = PLAIN[def.meta.id];
+      expect(p, def.meta.id).toBeDefined();
+      expect(p.simple.length).toBeGreaterThan(20);
+      expect(p.formula.length).toBeGreaterThan(20);
+    }
   });
 });
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { bootStore, useStore } from '../state/store';
 import { decodeShare, readShareToken } from '../state/urlState';
 import { TopBar } from './TopBar';
@@ -8,10 +8,35 @@ import { Insight } from './Insight';
 import { HighScores } from './HighScores';
 import { Help } from './Help';
 import { usePlayback } from './playback';
+import { Landing } from './Landing';
+
+/** '#play' or a share link opens the sandbox; anything else shows the landing page. */
+const viewFromHash = (): 'home' | 'play' => (location.hash === '#play' || location.hash.startsWith('#s=') ? 'play' : 'home');
 
 export function App() {
   usePlayback();
   const toast = useStore((s) => s.toast);
+  const [view, setView] = useState(viewFromHash);
+  const viewRef = useRef(view);
+  viewRef.current = view;
+
+  useEffect(() => {
+    const onHash = () => setView(viewFromHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  const play = (levelId?: string) => {
+    if (levelId) useStore.getState().loadLevel(levelId);
+    if (location.hash !== '#play') location.hash = 'play';
+    setView('play');
+    window.scrollTo(0, 0);
+  };
+  const home = () => {
+    useStore.getState().set({ playing: false });
+    history.pushState(null, '', location.pathname);
+    setView('home');
+  };
 
   useEffect(() => {
     const token = readShareToken();
@@ -34,6 +59,7 @@ export function App() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (viewRef.current !== 'play') return;
       const tag = (e.target as HTMLElement).tagName;
       if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
       const s = useStore.getState();
@@ -89,9 +115,22 @@ export function App() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  if (view === 'home') {
+    return (
+      <>
+        <Landing onPlay={play} />
+        {toast && (
+          <div className="toast" role="status">
+            {toast}
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="app">
-      <TopBar />
+      <TopBar onHome={home} />
       <div className="main">
         <ControlDeck />
         <Stage />

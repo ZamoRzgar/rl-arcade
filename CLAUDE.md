@@ -14,6 +14,7 @@ The full product spec is in `RL_ARCADE_BUILD_PROMPT.md` (also referred to as SPE
 - Determinism is sacred. All randomness goes through `Rng` (`src/core/rng.ts`). Environment randomness uses `root.fork('env').fork(episode)`; agent randomness uses `root.fork('agent')`. The environment draws exactly one uniform per step. Never use `Math.random()` in `src/core`.
 - Never weaken a reference test to make it pass. If one fails, the implementation is wrong until proven otherwise.
 - Strict TS, no `any`. Cite the Sutton & Barto section in a comment when implementing RL math.
+- The site root shows the landing page (`src/ui/Landing.tsx`); `#play` or a `#s=` share link opens the sandbox.
 - Copy is plain language from the user's side ("Settles 12 episodes sooner", not internal names).
 - Colors come from CSS tokens in `src/styles/app.css`. Canvas code reads them through `readTheme()`.
 
@@ -32,7 +33,7 @@ A slider change creates a new immutable `Experiment` → `state/store.ts` keeps 
    - `pseudocode` lines (ids referenced by `StepInfo.line`, `params` for hover highlighting).
    - `backup` diagram (reuse node ids `s0`, `a0`, `s1`, … so it morphs nicely).
    - `traits` (drives the "what changed" text), `summary`, `watchFor`, `reference`.
-3. Register it in `src/core/registry.ts`.
+3. Register it in `src/core/registry.ts`, and add its plain-language `simple` and `formula` lines to `src/core/plain.ts` (shown on the landing page and under every explanation; a test enforces it).
 4. Add tests: one hand-computed update in `tests/reference/units.test.ts`, and a behavioral reference test if a textbook result exists. The "every algorithm runs on every level" test picks it up automatically.
 
 The UI, the diff system, sweeps, versus mode, share links and high scores need no changes.

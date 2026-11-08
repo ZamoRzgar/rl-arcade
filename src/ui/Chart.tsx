@@ -156,7 +156,7 @@ export function Chart({ series, fillBetween, higherIsBetter = true, cursor, mark
     }
     // markers (live tweaks)
     for (const m of markers) {
-      ctx.strokeStyle = col('var(--neon-yellow)');
+      ctx.strokeStyle = col('var(--hi)');
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(X(m), padT);

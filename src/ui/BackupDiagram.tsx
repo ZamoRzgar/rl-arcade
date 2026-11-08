@@ -71,8 +71,8 @@ export function BackupDiagram({ spec }: { spec: BackupSpec }) {
           const o = Math.min(...kids.map((k) => k.o), p.o);
           return (
             <g key={arc.id} opacity={o}>
-              <path d={`M ${first.x} ${first.y} Q ${(first.x + last.x) / 2} ${midY} ${last.x} ${last.y}`} fill="none" stroke="var(--neon-yellow)" strokeWidth={0.8} />
-              <text x={(first.x + last.x) / 2} y={midY + 4} textAnchor="middle" fontSize={4.2} fill="var(--neon-yellow)" fontFamily="var(--font-body)">
+              <path d={`M ${first.x} ${first.y} Q ${(first.x + last.x) / 2} ${midY} ${last.x} ${last.y}`} fill="none" stroke="var(--accent)" strokeWidth={0.8} />
+              <text x={(first.x + last.x) / 2} y={midY + 4} textAnchor="middle" fontSize={4.2} fill="var(--accent)" fontFamily="var(--font-body)">
                 {arc.label}
               </text>
             </g>
@@ -80,7 +80,7 @@ export function BackupDiagram({ spec }: { spec: BackupSpec }) {
         })}
         {nodes.map((n) => {
           if (n.kind === 'state') return <circle key={n.id} cx={n.x} cy={n.y} r={4.2} fill="var(--screen)" stroke="var(--text)" strokeWidth={0.9} opacity={n.o} />;
-          if (n.kind === 'action') return <circle key={n.id} cx={n.x} cy={n.y} r={2.4} fill="var(--neon-yellow)" opacity={n.o} />;
+          if (n.kind === 'action') return <circle key={n.id} cx={n.x} cy={n.y} r={2.4} fill="var(--accent)" opacity={n.o} />;
           if (n.kind === 'terminal') return <rect key={n.id} x={n.x - 3.5} y={n.y - 3.5} width={7} height={7} fill="var(--good)" opacity={n.o} />;
           if (n.kind === 'model')
             return (

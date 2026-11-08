@@ -41,7 +41,7 @@ export function Help() {
           <span>This help</span>
         </div>
         <p className="small muted">
-          Grid cells: yellow arrows show the greedy policy, colors show value (cyan high, pink low), pink sparks are exploratory moves, and outlined
+          Grid cells: amber arrows show the greedy policy, colors show value (blue high, pink low), pink sparks are exploratory moves, and outlined
           cells are where the policy differs from the baseline. Values come from the real algorithms running in your browser. Nothing is pre-recorded.
         </p>
         <button ref={ref} type="button" className="btn primary" onClick={close}>

@@ -10,6 +10,7 @@ import { EquationDiff } from './EquationDiff';
 import { Pseudocode } from './Pseudocode';
 import { BackupDiagram } from './BackupDiagram';
 import { readTheme, diverging, rgba } from '../viz/theme';
+import { plainWords } from '../core/plain';
 
 interface Side {
   exp: Experiment;
@@ -33,7 +34,7 @@ function useComparison(): { main: Side | null; other: Side | null; versus: boole
   }
   const a = slots[0];
   return {
-    main: a.res ? { exp: a.exp, res: a.res, label: `Now · ${algoMeta(a.exp.algoId).short}`, color: 'var(--neon-yellow)' } : null,
+    main: a.res ? { exp: a.exp, res: a.res, label: `Now · ${algoMeta(a.exp.algoId).short}`, color: 'var(--accent)' } : null,
     other: baseline && baseline.res.kind === a.res?.kind ? { exp: baseline.exp, res: baseline.res, label: `Baseline · ${algoMeta(baseline.exp.algoId).short}`, color: 'var(--ghost)' } : null,
     versus: false,
   };
@@ -58,12 +59,36 @@ export function Insight() {
     <aside className="insight col" aria-label="Insight">
       <DiffPanel main={main} other={other} versus={versus} />
       {fromMeta && <WhatChanged from={fromMeta} to={meta} versus={versus} />}
+      <section className="panel explainer">
+        <h2 className="section-title">
+          About this method <span className="tag">{meta.short}</span>
+        </h2>
+        <p>{meta.summary}</p>
+        {plainWords(meta.id) && (
+          <div className="plain">
+            <b>In simple terms</b>
+            {plainWords(meta.id)!.simple}
+          </div>
+        )}
+        <ul>
+          {meta.watchFor.map((w) => (
+            <li key={w}>{w}</li>
+          ))}
+        </ul>
+        <div className="ref">{meta.reference}</div>
+      </section>
       <ChartsPanel main={main} other={other} />
       <section className="panel">
         <h2 className="section-title">
           Update rule <span className="tag">{meta.short}</span>
         </h2>
         <EquationDiff from={fromMeta} to={meta} hotParam={hotParam} />
+        {plainWords(meta.id) && (
+          <div className="plain">
+            <b>In words</b>
+            {plainWords(meta.id)!.formula}
+          </div>
+        )}
         {fromMeta && fromMeta.equation.filter((t) => meta.equation.some((u) => u.id === t.id)).length >= 4 && (
           <p className="small muted" style={{ margin: '4px 0 0' }}>Glowing parts are new compared with {fromMeta.short}; yellow parts changed.</p>
         )}
@@ -83,16 +108,6 @@ export function Insight() {
       <section className="panel">
         <h2 className="section-title">Backup diagram</h2>
         <BackupDiagram spec={meta.backup} />
-      </section>
-      <section className="panel explainer">
-        <h2 className="section-title">{meta.name}</h2>
-        <p>{meta.summary}</p>
-        <ul>
-          {meta.watchFor.map((w) => (
-            <li key={w}>{w}</li>
-          ))}
-        </ul>
-        <div className="ref">{meta.reference}</div>
       </section>
     </aside>
   );
@@ -216,13 +231,19 @@ function WhatChanged({ from, to, versus }: { from: AlgoMeta; to: AlgoMeta; versu
       <h2 className="section-title">
         Cartridge swap <span className="tag">{from.short} → {to.short}</span>
       </h2>
+      {plainWords(to.id) && (
+        <div className="plain">
+          <b>In simple terms</b>
+          {plainWords(to.id)!.simple}
+        </div>
+      )}
       {lines.slice(0, 3).map((l) => (
         <p key={l} className="small">
           {l}
         </p>
       ))}
       {expect && (
-        <p className="small" style={{ color: 'var(--neon-yellow)', marginBottom: 0 }}>
+        <p className="small" style={{ color: 'var(--hi)', marginBottom: 0 }}>
           Expect: {expect}
         </p>
       )}
@@ -408,7 +429,7 @@ function SweepPanel() {
       {sweep.status === 'done' && (
         <>
           <Chart
-            series={[{ values: scores, color: 'var(--neon-yellow)', label: `score by ${d.label}` }]}
+            series={[{ values: scores, color: 'var(--hi)', label: `score by ${d.label}` }]}
             xFormat={(x) => show(sweep.points[Math.round(x)]?.value)}
             cursor={sweep.points.findIndex((p) => p.value === cur) >= 0 ? sweep.points.findIndex((p) => p.value === cur) : undefined}
             xLabel={d.symbol ?? d.label}
@@ -428,7 +449,7 @@ function SweepPanel() {
               <button key={String(p.value)} type="button" className={`sweep-cell${p.value === cur ? ' cur' : ''}`} onClick={() => st.setParam(sweep.slot, d.id, p.value)}>
                 {exp.env.kind === 'grid' && p.result.finalV && <Thumb exp={exp} V={p.result.finalV} best={p.result.finalBest} />}
                 <div>{show(p.value)}</div>
-                <div style={{ color: 'var(--neon-yellow)' }}>{fmt(p.result.score)}</div>
+                <div style={{ color: 'var(--hi)' }}>{fmt(p.result.score)}</div>
               </button>
             ))}
           </div>
