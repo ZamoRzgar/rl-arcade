@@ -4,7 +4,7 @@ An interactive reinforcement learning sandbox with an arcade look. Turn any knob
 
 <!-- Add a screenshot or GIF here, e.g. docs/screenshot.png (the Cliff Walk SARSA → Q-learning swap makes a good one). -->
 
-**Live demo:** https://zamorzgar.github.io/rl-arcade/
+**Live demo:** https://zamoai.xyz/rl-arcade/
 
 ## What it does
 
