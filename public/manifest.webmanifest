@@ -1,0 +1,11 @@
+{
+  "name": "RL Arcade",
+  "short_name": "RL Arcade",
+  "description": "An interactive reinforcement learning sandbox. Change a knob, see what changes.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0920",
+  "theme_color": "#131035",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
